@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>demo</title>
+
+    <style>
+        .list div {
+            padding-left: 20px;
+        }
+    </style>
+</head>
+<body>
+<div id="test">
+    <ul>
+        <li>
+            Test 1
+            <ul>
+                <li>
+                    Test 1
+                    <ul></ul>
+                    <button>+</button>
+                    <button>-</button>
+                </li>
+                <li>
+                    Test 2
+                    <ul></ul>
+                    <button>+</button>
+                    <button>-</button>
+                </li>
+                <li>
+                    Test 3
+                    <ul></ul>
+                    <button>+</button>
+                    <button>-</button>
+                </li>
+            </ul>
+            <button>+</button>
+            <button>-</button>
+        </li>
+        <li>
+            Test 2
+            <ul></ul>
+            <button>+</button>
+            <button>-</button>
+        </li>
+        <li>
+            Test 3
+            <ul></ul>
+            <button>+</button>
+            <button>-</button>
+        </li>
+    </ul>
+    <button>+</button>
+    <button>-</button>
+
+    <a href="#1">TEST 1</a>
+    <a href="#2">TEST 2</a>
+    <a href="#3">TEST 3</a>
+</div>
+
+<div id="test2" class="list"></div>
+
+<script src="js/jquery-2.1.4.min.js"></script>
+<script src="js/jquery.imenu.js"></script>
+
+<script>
+    var option = {
+        name: 'Test',
+        on: {
+            "click": function () {
+            }
+        }
+    };
+
+    var node = {
+        name: 'root',
+        options: [
+            option,
+            option,
+            option
+        ],
+        nodes: [
+            {
+                name: 'level 1-1',
+                nodes: [
+                    {
+                        name: 'level 1-1-1',
+                        nodes: [
+                            {
+                                name: 'level 1-1-1-1',
+                                nodes: [
+                                    {
+                                        name: 'level 1-1-1-1-1'
+                                    }
+                                ]
+                            },
+                            {
+                                name: 'level 1-1-1-2',
+                            }
+                        ]
+                    },
+                    {
+                        name: 'level 1-1-2',
+                    }
+                ]
+            },
+            {
+                name: 'level 1-2',
+                nodes: [
+                    {
+                        name: 'level 1-2-1',
+                        nodes: [
+                            {
+                                name: 'level 1-2-1-1',
+                            },
+                            {
+                                name: 'level 1-2-1-2',
+                            },
+                            {
+                                name: 'level 1-2-1-3',
+                            },
+                            {
+                                name: 'level 1-2-1-4',
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                name: 'level 1-3',
+                nodes: [
+                    {
+                        name: 'level 1-3-1',
+                    }
+                ]
+            }
+        ]
+    };
+
+    var iMenu1 = new $("#test2").IMenu(node);
+
+</script>
+
+</body>
+</html>
