@@ -1,23 +1,24 @@
-var option = {
-    on: {
-        "click": function () {
-
-        }
-    }
-};
-
-var node = {
-    on: {
-        "click": function () {
-
-        }
-    },
-
-    options: [
-        option,
-        option
-    ]
-};
+//var option = {
+//    on: {
+//        "click": function () {
+//
+//        }
+//    },
+//    name: "OPT"
+//};
+//
+//var node = {
+//    on: {
+//        "click": function () {
+//
+//        }
+//    },
+//
+//    options: [
+//        option,
+//        option
+//    ]
+//};
 
 //<li>
 //<span><span>
@@ -29,38 +30,41 @@ var node = {
     $.fn.IMenu = function (node) {
         var self = this;
 
-        self.node = $.extend({}, node);
+        //this.node = $.extend({}, node);
 
-        self.update = function () {
+        this.update = function () {
             self.empty();
-            var html = generateHtml(self.node);
-            self.append(html);
-        }
+            self.append(generateHtml(self.node));
+        };
 
         function generateHtml(node) {
-            if (typeof node === 'undefined') return;
+            if (typeof node === "undefined") return;
 
-            var html = $("<ul>");
-            html.after($("<span>").text(node.name));
-
-            if (typeof node.nodes === 'undefined') return html;
-            for (var nodeIndex in node.nodes) {
-                html.append(
-                    $("<li>").append(
-                        generateHtml(node.nodes[nodeIndex])
-                    )
-                );
+            if (typeof node.remove !== "undefined" && node.remove) {
+                node = undefined;
+                return;
             }
 
+            var html = node.dom.clone(true);
+
             for (var optionIndex in node.options) {
-                html.append($("<button>").text(node.options[optionIndex].name));
+                var option = node.options[optionIndex].clone(true);
+                option.data("node", node);
+                html.append(option);
+            }
+
+            if (typeof node.nodes === "undefined") return html;
+
+            for (var nodeIndex in node.nodes) {
+                html.append(generateHtml(node.nodes[nodeIndex]));
             }
 
             return html;
         }
 
-        self.update();
-        return self;
+        this.update();
+
+        return this;
     }
 
 }(jQuery));
