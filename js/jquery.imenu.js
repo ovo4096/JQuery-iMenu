@@ -1,30 +1,3 @@
-//var option = {
-//    on: {
-//        "click": function () {
-//
-//        }
-//    },
-//    name: "OPT"
-//};
-//
-//var node = {
-//    on: {
-//        "click": function () {
-//
-//        }
-//    },
-//
-//    options: [
-//        option,
-//        option
-//    ]
-//};
-
-//<li>
-//<span><span>
-//<ul></ul>
-//</li>
-
 (function ($) {
 
     $.fn.IMenu = function (node) {
@@ -39,10 +12,8 @@
 
         function generateHtml(node) {
             if (typeof node === "undefined") return;
-
-            if (typeof node.remove !== "undefined" && node.remove) {
-                node = undefined;
-                return;
+            if (typeof node.delete !== "undefined") {
+                garbageCollector();
             }
 
             var html = node.dom.clone(true);
@@ -60,6 +31,31 @@
             }
 
             return html;
+        }
+
+        function garbageCollector() {
+
+            function nodeGC(node) {
+                if (typeof node.nodes === "undefined") return;
+
+                for (var nodeIndex in node.nodes) {
+                    if (typeof node.nodes[nodeIndex].delete !== "undefined") {
+                        node.nodes[nodeIndex] = undefined;
+                    } else {
+                        nodeGC(node.nodes[nodeIndex]);
+                    }
+                }
+            }
+
+            if (typeof self.node === "undefined") return;
+            if (typeof self.node.delete !== "undefined") {
+                self.node = undefined;
+            }
+            else {
+                nodeGC(self.node);
+            }
+
+            //garbageCollector();
         }
 
         this.update();
