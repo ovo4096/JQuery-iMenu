@@ -1,50 +1,16 @@
-//var option = {
-//    on: {
-//        "click": function () {
-//
-//        }
-//    },
-//    name: "OPT"
-//};
-//
-//var node = {
-//    on: {
-//        "click": function () {
-//
-//        }
-//    },
-//
-//    options: [
-//        option,
-//        option
-//    ]
-//};
-
-//<li>
-//<span><span>
-//<ul></ul>
-//</li>
-
 (function ($) {
-
     $.fn.IMenu = function (node) {
         var self = this;
 
-        //this.node = $.extend({}, node);
+        self.node = node;
 
-        this.update = function () {
+        self.update = function () {
             self.empty();
-            self.append(generateHtml(self.node));
+            self.append(generateHtml());
         };
 
-        function generateHtml(node) {
+        function generateNodeHtml(node) {
             if (typeof node === "undefined") return;
-
-            if (typeof node.remove !== "undefined" && node.remove) {
-                node = undefined;
-                return;
-            }
-
             var html = node.dom.clone(true);
 
             for (var optionIndex in node.options) {
@@ -56,15 +22,26 @@
             if (typeof node.nodes === "undefined") return html;
 
             for (var nodeIndex in node.nodes) {
-                html.append(generateHtml(node.nodes[nodeIndex]));
+                if (typeof node.nodes[nodeIndex].remove !== "undefined") {
+                    delete node.nodes[nodeIndex];
+                    continue;
+                }
+
+                html.append(generateNodeHtml(node.nodes[nodeIndex]));
             }
 
             return html;
         }
 
-        this.update();
+        function generateHtml() {
+            if (typeof self.node === "undefined") return;
+            if (typeof self.node.remove !== "undefined") {
+                delete self.node;
+            }
+            return generateNodeHtml(self.node);
+        }
 
-        return this;
+        return self;
     }
 
 }(jQuery));

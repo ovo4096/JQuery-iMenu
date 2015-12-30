@@ -17,55 +17,56 @@
 <script src="js/jquery.imenu.js"></script>
 
 <script>
-    var menu = new $("#test").IMenu();
+    $(function () {
+        var menu = new $("#test").IMenu();
 
-    var addNodeOptionTemplate = $("<button>");
+        var addNodeOptionTemplate = $("<button>");
+        addNodeOptionTemplate.text("Add Node");
+        addNodeOptionTemplate.on("click", {menu: menu}, function (e) {
+            var node = $(this).data("node");
 
-    addNodeOptionTemplate.text("Add Node");
-    addNodeOptionTemplate.on("click", {menu: menu}, function (e) {
-        var node = $(this).data("node");
+            if (typeof node.nodes === "undefined") {
+                node.nodes = [];
+            }
 
-        if (typeof node.nodes === "undefined") {
-            node.nodes = [];
-        }
+            alert(node.options.input.val());
+            node.nodes.push({
+                dom: $("<div>").text(node.options.input.val()),
+                options: {
+                    addBtn: addNodeOptionTemplate,
+                    removeBtn: removeNodeOptionTemplate,
+                    input: inputNodeNameOptionTemplate
+                }
+            });
 
-        node.nodes.push({
-            dom: $("<div>").text("node - " + (node.nodes.length + 1)),
-            options: [
-                addNodeOptionTemplate,
-                removeNodeOptionTemplate
-            ]
+            e.data.menu.update();
         });
 
-        e.data.menu.update();
+        var removeNodeOptionTemplate = $("<button>");
+        removeNodeOptionTemplate.text("Remove Node");
+        removeNodeOptionTemplate.on("click", {menu: menu}, function (e) {
+            var node = $(this).data("node");
+
+            node.remove = true;
+
+            e.data.menu.update();
+        });
+
+        var inputNodeNameOptionTemplate = $("<input type='text'>").val("test");
+
+        var nodeTemplate = {
+            dom: $("<div>").text("root"),
+            options: {
+                addNodeOptionTemplate,
+                removeNodeOptionTemplate,
+                input: inputNodeNameOptionTemplate
+            }
+        };
+
+        menu.node = nodeTemplate;
+
+        menu.update();
     });
-
-    var removeNodeOptionTemplate = $("<button>");
-
-    removeNodeOptionTemplate.text("Remove Node");
-    removeNodeOptionTemplate.on("click", {menu: menu}, function (e) {
-        var node = $(this).data("node");
-
-        node.remove = true;
-
-        e.data.menu.update();
-    });
-
-    var nodeTemplate = {
-        name: "root",
-        dom: $("<div>")
-                .text("root"),
-
-        options: [
-            addNodeOptionTemplate,
-            removeNodeOptionTemplate
-        ]
-    };
-
-    menu.node = nodeTemplate;
-
-    menu.update();
-
 </script>
 
 </body>
